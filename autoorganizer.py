@@ -1,15 +1,16 @@
 import os
 import shutil
-import mimetypes
 from datetime import datetime
 from exception_handling import is_exception
 from model import Config
+from type_map import TYPE_MAP
 
 
 def get_file_type(file_path):
-    type_guess, _ = mimetypes.guess_type(file_path)
-    if type_guess:
-        return type_guess.split('/')[0].capitalize()
+    ext = os.path.splitext(file_path)[1].lower()
+    for category, extensions in TYPE_MAP.items():
+        if ext in extensions:
+            return category
     return "Others"
 
 
@@ -37,37 +38,39 @@ def get_pattern_folder(file_name):
 
 
 def organize_files(base_dir, config: Config):
-    for root, dirs, files in os.walk(base_dir):
-        if config.depth == 1 and root != base_dir:
-            continue
-
-        if is_exception(root, config.exceptions):
-            continue
-
-        for file in files:
-            file_path = os.path.join(root, file)
-
-            if is_exception(file_path, config.exceptions):
+    try:
+        for root, dirs, files in os.walk(base_dir):
+            if config.depth == 1 and root != base_dir:
                 continue
 
-            if not os.path.isfile(file_path):
+            if is_exception(root, config.exceptions):
                 continue
 
-            if config.sort_by == "type":
-                folder_name = get_file_type(file_path)
-            elif config.sort_by == "date":
-                folder_name = get_file_date(file_path)
-            elif config.sort_by == "pattern":
-                folder_name = get_pattern_folder(file)
-            else:
-                folder_name = "Unsorted"
+            for file in files:
 
-            target_dir = os.path.join(base_dir, folder_name)
-            os.makedirs(target_dir, exist_ok=True)
+                file_path = os.path.join(root, file)
 
-            new_path = os.path.join(target_dir, file)
-            if file_path != new_path:
-                shutil.move(file_path, new_path)
-                print(f"Moved: {file_path} -> {new_path}")
+                if is_exception(file_path, config.exceptions):
+                    continue
 
-# ----------------------- CLI INTERFACE ---------------------------
+                if not os.path.isfile(file_path):
+                    continue
+
+                if config.sort_by == "type":
+                    folder_name = get_file_type(file_path)
+                elif config.sort_by == "date":
+                    folder_name = get_file_date(file_path)
+                elif config.sort_by == "pattern":
+                    folder_name = get_pattern_folder(file)
+                else:
+                    folder_name = "Unsorted"
+
+                target_dir = os.path.join(base_dir, folder_name)
+                os.makedirs(target_dir, exist_ok=True)
+
+                new_path = os.path.join(target_dir, file)
+                if file_path != new_path:
+                    shutil.move(file_path, new_path)
+                    # print(f"Moved: {file_path} -> {new_path}")
+    except Exception as e:
+        print(f"Error during file organization: {e}")

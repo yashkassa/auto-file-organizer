@@ -1,10 +1,13 @@
+import os
 from autoorganizer import organize_files
 from model import Config
+from pathlib import Path
 
 
+# ----------------------- CLI INTERFACE ---------------------------
 def cli():
-    base_dir = input("Enter the directory to organize: ").strip()
-
+    base_dir = os.getcwd()
+    print(base_dir)
     print("Choose sorting strategy:")
     print("1. Type")
     print("2. Date")
