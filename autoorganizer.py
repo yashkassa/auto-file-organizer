@@ -2,23 +2,8 @@ import os
 import shutil
 import mimetypes
 from datetime import datetime
-
-# ----------------------- CONFIG STRUCTURE ---------------------------
-
-
-class Config:
-    def __init__(self, sort_by='type', depth=1, exceptions=None):
-        self.sort_by = sort_by
-        self.depth = depth
-        self.exceptions = exceptions if exceptions else []
-
-
-# ----------------------- CORE UTILS ---------------------------
-def is_exception(path, exceptions):
-    for ex in exceptions:
-        if ex in path:
-            return True
-    return False
+from exception_handling import is_exception
+from model import Config
 
 
 def get_file_type(file_path):
@@ -86,28 +71,3 @@ def organize_files(base_dir, config: Config):
                 print(f"Moved: {file_path} -> {new_path}")
 
 # ----------------------- CLI INTERFACE ---------------------------
-
-
-def cli():
-    base_dir = input("Enter the directory to organize: ").strip()
-
-    print("Choose sorting strategy:")
-    print("1. Type")
-    print("2. Date")
-    print("3. Pattern")
-    sort_input = input("Enter number: ").strip()
-    sort_by_map = {"1": "type", "2": "date", "3": "pattern"}
-    sort_by = sort_by_map.get(sort_input, "type")
-
-    depth_input = input("Enter depth level (default 1): ").strip()
-    depth = int(depth_input) if depth_input.isdigit() else 1
-
-    ex_input = input("Enter exceptions (comma-separated): ").strip()
-    exceptions = [e.strip() for e in ex_input.split(",") if e.strip()]
-
-    config = Config(sort_by=sort_by, depth=depth, exceptions=exceptions)
-    organize_files(base_dir, config)
-
-
-if __name__ == "__main__":
-    cli()
