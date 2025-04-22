@@ -3,15 +3,29 @@ import shutil
 from datetime import datetime
 from exception_handling import is_exception
 from model import Config
-from type_map import TYPE_MAP
+from type_map import TYPE_RULES
+
+
+def find_category(file_extension, type_map=TYPE_RULES):
+    for category, details in type_map.items():
+        extensions = details.get("extensions", [])
+        if file_extension in extensions:
+            return category
+
+        subfolders = details.get("subfolders", {})
+        if subfolders:
+            sub_category = find_category(file_extension, subfolders)
+            print(sub_category)
+            if sub_category and sub_category != "Other":  # Only return if it's a valid match
+                return os.path.join(category, sub_category)
+
+    return "Other"  # Default fallback, only after all checks fail
 
 
 def get_file_type(file_path):
     ext = os.path.splitext(file_path)[1].lower()
-    for category, extensions in TYPE_MAP.items():
-        if ext in extensions:
-            return category
-    return "Others"
+    print(ext)
+    return find_category(ext)
 
 
 def get_file_date(file_path):
@@ -64,7 +78,7 @@ def organize_files(base_dir, config: Config):
                     folder_name = get_pattern_folder(file)
                 else:
                     folder_name = "Unsorted"
-
+                print(f"folder name: {folder_name} base dir: {base_dir}")
                 target_dir = os.path.join(base_dir, folder_name)
                 os.makedirs(target_dir, exist_ok=True)
 
