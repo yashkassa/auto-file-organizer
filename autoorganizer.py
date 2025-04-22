@@ -4,6 +4,7 @@ from datetime import datetime
 from exception_handling import is_exception
 from model import Config
 from type_map import TYPE_RULES
+import json
 
 
 def find_category(file_extension, type_map=TYPE_RULES):
@@ -46,10 +47,18 @@ def get_pattern_folder(file_name):
     else:
         return "Misc"
 
+
+def save_history(history, base_dir):
+    history_path = os.path.join(base_dir, "organize_history.json")
+    with open(history_path, "w") as f:
+        json.dump(history, f, indent=2)
+
 # ----------------------- ORGANIZATION LOGIC ---------------------------
 
 
 def organize_files(base_dir, config: Config):
+    history = []
+    print('Organizing files...')
     try:
         for root, dirs, files in os.walk(base_dir):
             if config.depth == 1 and root != base_dir:
@@ -78,6 +87,7 @@ def organize_files(base_dir, config: Config):
                     folder_name = "Unsorted"
                 target_dir = os.path.join(base_dir, folder_name)
                 os.makedirs(target_dir, exist_ok=True)
+                history.append({"created_folder": target_dir})
 
                 new_path = os.path.join(target_dir, file)
                 if file_path != new_path:
@@ -86,6 +96,13 @@ def organize_files(base_dir, config: Config):
                             f"Skipped: '{file}' already exists in '{target_dir}'")
                     else:
                         shutil.move(file_path, new_path)
+                        history.append({
+                            "original_path": file_path,
+                            "new_path": new_path
+                        })
 
+        save_history(history, base_dir)
+        print("Files organized successfully.")
+        exit(0)
     except Exception as e:
         print(f"Error during file organization: {e}")
