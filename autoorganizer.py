@@ -1,7 +1,7 @@
 import os
 import shutil
 from datetime import datetime
-from exception_handling import is_exception
+from file_ignore import is_file_to_be_ignored
 from model import Config
 from type_map import TYPE_RULES
 import json
@@ -64,14 +64,14 @@ def organize_files(base_dir, config: Config):
             if config.depth == 1 and root != base_dir:
                 continue
 
-            if is_exception(root, config.exceptions):
+            if is_file_to_be_ignored(root, config.exceptions):
                 continue
 
             for file in files:
 
                 file_path = os.path.join(root, file)
 
-                if is_exception(file_path, config.exceptions):
+                if is_file_to_be_ignored(file_path, config.exceptions):
                     continue
 
                 if not os.path.isfile(file_path):

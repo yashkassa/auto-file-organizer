@@ -34,6 +34,7 @@ def cli():
         # depth = int(depth_input) if depth_input.isdigit() else 1
 
         ex_input = input("Enter exceptions (comma-separated): ").strip()
+        # files to be ignored
         exceptions = [e.strip() for e in ex_input.split(",") if e.strip()]
 
         config = Config(sort_by=sort_by, depth=1, exceptions=exceptions)

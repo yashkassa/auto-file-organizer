@@ -23,7 +23,7 @@ def undo_last_operation(base_dir):
                 if os.path.exists(moved):
                     os.makedirs(os.path.dirname(original), exist_ok=True)
                     shutil.move(moved, original)
-                    print(f"Moved back: {moved} → {original}")
+                    # print(f"Moved back: {moved} → {original}")
                 else:
                     print(f"File not found: {moved}")
 
@@ -37,7 +37,7 @@ def undo_last_operation(base_dir):
             if os.path.exists(folder) and not os.listdir(folder):
                 try:
                     os.rmdir(folder)
-                    print(f"Deleted empty folder: {folder}")
+                    # print(f"Deleted empty folder: {folder}")
                 except Exception as e:
                     print(f"Failed to delete folder {folder}: {e}")
 
@@ -46,30 +46,3 @@ def undo_last_operation(base_dir):
 
     except Exception as e:
         print(f"Undo failed: {e}")
-
-
-# def undo_last_operation(base_dir):
-#     try:
-#         history_path = os.path.join(base_dir, "file_sort_history.json")
-#         if not os.path.exists(history_path):
-#             print("No history found.")
-#             return
-
-#         with open(history_path, "r") as f:
-#             history = json.load(f)
-
-#         for record in reversed(history):  # reverse to restore in order
-#             original = record["original_path"]
-#             new = record["new_path"]
-
-#             if os.path.exists(new):
-#                 os.makedirs(os.path.dirname(original), exist_ok=True)
-#                 shutil.move(new, original)
-#                 print(f"Restored: {new} -> {original}")
-#             else:
-#                 print(f"File missing: {new}, cannot restore.")
-
-#         os.remove(history_path)  # cleanup history file
-#         print("Undo complete.")
-#     except Exception as e:
-#         print(f"Error during undo: {e}")
