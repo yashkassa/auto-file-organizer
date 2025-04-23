@@ -3,8 +3,13 @@ import fnmatch
 import re
 
 
+# # ----------------------- FILE IGNORE ---------------------------
 def is_file_to_be_ignored(path, exceptions):
     filename = os.path.basename(path).lower()
+
+    if filename == "organize_history.json":  # Ignore the history file itself
+        return True
+
     normalized_path = os.path.normpath(path).lower()
 
     for pattern in exceptions:
@@ -25,11 +30,3 @@ def is_file_to_be_ignored(path, exceptions):
             return True
 
     return False
-
-
-# # ----------------------- CORE UTILS ---------------------------
-# def is_exception(path, exceptions):
-#     for ex in exceptions:
-#         if ex in path:
-#             return True
-#     return False

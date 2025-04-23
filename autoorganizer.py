@@ -103,6 +103,6 @@ def organize_files(base_dir, config: Config):
 
         save_history(history, base_dir)
         print("Files organized successfully.")
-        exit(0)
+
     except Exception as e:
         print(f"Error during file organization: {e}")
