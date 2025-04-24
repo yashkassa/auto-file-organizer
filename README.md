@@ -22,4 +22,6 @@ pip install auto-file-organizer
 organize --help
 ```
 
+## 📦 PyPI
+
 [![PyPI version](https://badge.fury.io/py/auto-file-organizer.svg)](https://pypi.org/project/auto-file-organizer/)
