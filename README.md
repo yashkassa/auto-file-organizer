@@ -4,6 +4,12 @@ A smart, customizable file organization tool for your local directories. Sort fi
 
 ---
 
+### 🧪 In Action
+
+![Auto File Organizer](assets/demo.gif)
+
+---
+
 ## 🚀 Features
 
 - 📁 **Sort by Type, Date, or Pattern**
