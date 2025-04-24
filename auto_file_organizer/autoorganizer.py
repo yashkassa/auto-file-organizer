@@ -1,9 +1,9 @@
 import os
 import shutil
 from datetime import datetime
-from file_ignore import is_file_to_be_ignored
-from model import Config
-from type_map import TYPE_RULES
+from auto_file_organizer.file_ignore import is_file_to_be_ignored
+from auto_file_organizer.model import Config
+from auto_file_organizer.type_map import TYPE_RULES
 import json
 
 

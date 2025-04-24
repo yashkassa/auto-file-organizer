@@ -1,9 +1,8 @@
 import os
-from autoorganizer import organize_files
-from model import Config
-from pathlib import Path
 import argparse
-from undo import undo_last_operation
+from auto_file_organizer.autoorganizer import organize_files
+from auto_file_organizer.model import Config
+from auto_file_organizer.undo import undo_last_operation
 
 
 # ----------------------- CLI INTERFACE ---------------------------
