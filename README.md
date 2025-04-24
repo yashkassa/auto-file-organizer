@@ -27,7 +27,11 @@ A smart, customizable file organization tool for your local directories. Sort fi
 pip install auto-file-organizer
 organize --help
 ```
+## 🚧 Future Goals
+🤖 LLM Integration (Under Construction)
+We're working on integrating a Language Model to understand file names and intelligently suggest or auto-categorize files based on content/context. Stay tuned!
 
+---
 ## 📦 PyPI
 
 [![PyPI version](https://badge.fury.io/py/auto-file-organizer.svg)](https://pypi.org/project/auto-file-organizer/)
