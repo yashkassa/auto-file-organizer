@@ -4,19 +4,27 @@ from auto_file_organizer.autoorganizer import organize_files
 from auto_file_organizer.model import Config
 from auto_file_organizer.undo import undo_last_operation
 
-
 # ----------------------- CLI INTERFACE ---------------------------
+
+
 def cli():
     base_dir = os.getcwd()
 
     parser = argparse.ArgumentParser(
-        description="Organize your files with optional undo support.")
-    parser.add_argument("--undo", action="store_true",
-                        help="Undo the last file organization operation")
+        prog="organize",
+        description="🗂️ Auto File Organizer: Organizes files in the current directory by type, date, or pattern.\n"
+                    "By default, it organizes the current working directory.\n"
+                    "Use --undo to revert the last operation.",
+        epilog="Example usage:\n  organize           # to start organizing\n  organize --undo    # to undo the last sort",
+        formatter_class=argparse.RawTextHelpFormatter
+    )
+    parser.add_argument(
+        "--undo",
+        action="store_true",
+        help="Undo the last file organization operation in the current directory"
+    )
 
     args = parser.parse_args()
-
-    base_dir = os.getcwd()  # Automatically use current directory
 
     if args.undo:
         undo_last_operation(base_dir)
@@ -29,11 +37,7 @@ def cli():
         sort_by_map = {"1": "type", "2": "date", "3": "pattern"}
         sort_by = sort_by_map.get(sort_input, "type")
 
-        # depth_input = input("Enter depth level (default 1): ").strip()
-        # depth = int(depth_input) if depth_input.isdigit() else 1
-
         ex_input = input("Enter exceptions (comma-separated): ").strip()
-        # files to be ignored
         exceptions = [e.strip() for e in ex_input.split(",") if e.strip()]
 
         config = Config(sort_by=sort_by, depth=1, exceptions=exceptions)
