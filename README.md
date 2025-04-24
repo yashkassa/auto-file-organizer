@@ -18,9 +18,8 @@ A smart, customizable file organization tool for your local directories. Sort fi
 ## 🔧 Installation
 
 ```bash
-git clone https://github.com/your-username/auto-file-organizer.git
-cd auto-file-organizer
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt  # if you add any external deps
+pip install auto-file-organizer
+organize --help
 ```
+
+[![PyPI version](https://badge.fury.io/py/auto-file-organizer.svg)](https://pypi.org/project/auto-file-organizer/)
